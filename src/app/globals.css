@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* ===== E.K.PACK Brand System ===== */
+:root {
+  /* Brand colors.
+     brand-green מותאם ל-AA: #2f7a4d עובר 4.5:1 גם כטקסט על קרם וגם עם טקסט לבן (כפתורים).
+     brand-green-light נשמר לגוון המותג המקורי לשימוש דקורטיבי (מילויים/אלמנטים גדולים). */
+  --brand-green: #2f7a4d;
+  --brand-green-dark: #245c3a; /* hover לכפתורים — שומר ניגודיות */
+  --brand-green-light: #3e8e5b; /* גוון מותג מקורי — דקורטיבי בלבד */
+  --brand-teal: #18b7ae; /* דקורטיבי בלבד — לא לטקסט לבן */
+  --brand-blue: #276d9b;
+  --brand-brown: #8a5a3b;
+  --brand-cream: #fff8ef;
+
+  /* Semantic */
+  --background: #fff8ef;
+  --foreground: #2a2018;
+  --muted: #6b5d4f;
+  --card: #ffffff;
+  --border: #ece2d4;
+}
+
+@theme inline {
+  /* Expose brand colors as Tailwind utilities (bg-brand-green, text-brand-teal, ...) */
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-dark: var(--brand-green-dark);
+  --color-brand-green-light: var(--brand-green-light);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-brown: var(--brand-brown);
+  --color-brand-cream: var(--brand-cream);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+
+  --font-sans: var(--font-heebo);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-heebo), system-ui, sans-serif;
+}
+
+/* RTL-aware base tweaks */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal overflow (RTL requirement) */
+body {
+  overflow-x: hidden;
+}
+
+/* Global visible focus ring — נגישות (focus-states, keyboard-nav) */
+:focus-visible {
+  outline: 2px solid var(--brand-green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* כיבוד prefers-reduced-motion — נגישות (reduced-motion).
+   מבטל אנימציות CSS עבור משתמשים שביקשו תנועה מופחתת.
+   אנימציות Framer Motion מטופלות נפרדות עם useReducedMotion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
