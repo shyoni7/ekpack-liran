@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
 import { contactSchema, type ContactFormValues } from "@/lib/validation";
-import { SERVICES } from "@/lib/site-config";
+import { SERVICES, SITE } from "@/lib/site-config";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green";
@@ -144,9 +145,26 @@ export default function ContactForm() {
         <textarea id="message" rows={4} className={inputClass} {...register("message")} />
       </div>
 
+      {/* חובת יידוע (חוק הגנת הפרטיות) — מסירת המידע מרצון, המטרה, וזכויות */}
+      <p className="rounded-lg bg-brand-cream p-3 text-xs leading-relaxed text-muted">
+        מסירת הפרטים נעשית מרצונכם החופשי ואינכם חייבים על פי חוק למסור אותם.
+        הפרטים ישמשו ליצירת קשר ומתן מידע על השירותים בלבד, וייכללו במאגר הפניות
+        של {SITE.name}. עומדות לכם זכויות עיון, תיקון ומחיקה. לפרטים — ראו{" "}
+        <Link href="/privacy" className="text-brand-green underline">
+          מדיניות הפרטיות
+        </Link>
+        .
+      </p>
+
       <label className="flex items-start gap-2 text-sm text-foreground">
         <input type="checkbox" {...register("privacy")} className="mt-1 accent-brand-green" />
-        <span>קראתי ואני מאשר/ת את מדיניות הפרטיות *</span>
+        <span>
+          קראתי ואני מאשר/ת את{" "}
+          <Link href="/privacy" target="_blank" className="text-brand-green underline">
+            מדיניות הפרטיות
+          </Link>{" "}
+          ואת השימוש בפרטיי ליצירת קשר *
+        </span>
       </label>
       {errors.privacy && (
         <p role="alert" className="text-xs text-red-600">{errors.privacy.message}</p>
