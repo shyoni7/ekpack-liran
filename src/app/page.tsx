@@ -2,14 +2,22 @@ import HeroVideo from "@/components/home/HeroVideo";
 import ServicesGrid from "@/components/home/ServicesGrid";
 import AboutSection from "@/components/home/AboutSection";
 import ContactForm from "@/components/contact/ContactForm";
-import { getServices } from "@/lib/data";
+import { getServices, getSiteSettings } from "@/lib/data";
+
+export const revalidate = 60; // שולף תוכן עדכני מ-DB (סרטון hero, שירותים) כל דקה
 
 export default async function HomePage() {
-  const services = await getServices();
+  const [services, settings] = await Promise.all([
+    getServices(),
+    getSiteSettings(),
+  ]);
 
   return (
     <>
-      <HeroVideo />
+      <HeroVideo
+        videoSrc={settings?.hero_video}
+        posterSrc={settings?.hero_poster}
+      />
       <ServicesGrid services={services} />
       <AboutSection />
 
