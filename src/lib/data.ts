@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { SERVICES } from "@/lib/site-config";
-import type { Service, GalleryItem } from "@/types";
+import type { Service, GalleryItem, SiteSettings } from "@/types";
 
 // בודק אם Supabase מוגדר. מאפשר build/preview גם ללא חיבור DB.
 function isConfigured(): boolean {
@@ -64,6 +64,22 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
     return data as Service;
   } catch {
     return fallbackServices().find((s) => s.slug === slug) ?? null;
+  }
+}
+
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  if (!isConfigured()) return null;
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("site_settings")
+      .select("*")
+      .eq("id", 1)
+      .single();
+    if (error || !data) return null;
+    return data as SiteSettings;
+  } catch {
+    return null;
   }
 }
 

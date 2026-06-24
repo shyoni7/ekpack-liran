@@ -10,7 +10,7 @@ interface HeroVideoProps {
 // Hero ברוחב מלא עם סרטון רקע מתנגן אוטומטית (muted, loop). נופל לרקע צבעוני אם אין סרטון.
 export default function HeroVideo({ videoSrc, posterSrc }: HeroVideoProps) {
   return (
-    <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-dvh items-center justify-center overflow-hidden">
       {/* רקע: סרטון או gradient מותג */}
       {videoSrc ? (
         <video
