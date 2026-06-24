@@ -55,8 +55,11 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-border py-4 text-center text-xs text-muted">
-        © {new Date().getFullYear()} {SITE.name}. כל הזכויות שמורות.
+      <div className="flex flex-col items-center gap-1 border-t border-border py-4 text-center text-xs text-muted sm:flex-row sm:justify-center sm:gap-3">
+        <span>© {new Date().getFullYear()} {SITE.name}. כל הזכויות שמורות.</span>
+        <Link href="/privacy" className="hover:text-brand-green hover:underline">
+          מדיניות פרטיות
+        </Link>
       </div>
     </footer>
   );
