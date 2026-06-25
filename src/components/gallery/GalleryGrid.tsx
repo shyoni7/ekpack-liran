@@ -58,20 +58,20 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
         </div>
       )}
 
-      {/* רשת תמונות */}
-      <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [&>*]:mb-3">
+      {/* רשת אחידה — כל פריט בריבוע זהה, חתוך יפה (object-cover) */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {filtered.map((item) => (
           <button
             key={item.id}
             type="button"
             onClick={() => setLightbox(item)}
-            className="relative block w-full overflow-hidden rounded-xl"
+            className="group relative aspect-square overflow-hidden rounded-xl bg-brand-cream"
           >
             {item.type === "video" && !item.thumbnail && item.file_url ? (
               <>
                 <video
                   src={item.file_url}
-                  className="w-full transition-transform hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   muted
                   playsInline
                   preload="metadata"
@@ -88,7 +88,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               <img
                 src={item.thumbnail ?? item.file_url ?? ""}
                 alt={item.title ?? "תמונה מהגלריה"}
-                className="w-full transition-transform hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
               />
             )}
