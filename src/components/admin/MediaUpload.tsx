@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { createUploadUrl } from "@/app/admin/media/actions";
 
 interface MediaUploadProps {
   value?: string | null;
@@ -29,17 +30,23 @@ export default function MediaUpload({
     setError(null);
     setUploading(true);
     try {
-      const supabase = createClient();
       const ext = file.name.split(".").pop() ?? "bin";
-      const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+      // 1. השרת מייצר signed upload URL (מאמת שאנחנו מחוברים)
+      const res = await createUploadUrl(folder, ext);
+      if ("error" in res) throw new Error(res.error);
+      // 2. העלאה ישירה לאישור — עוקף RLS ומגבלות גודל
+      const supabase = createClient();
       const { error: upErr } = await supabase.storage
         .from("media")
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .uploadToSignedUrl(res.path, res.token, file, { contentType: file.type });
       if (upErr) throw upErr;
-      const { data } = supabase.storage.from("media").getPublicUrl(path);
+      // 3. כתובת ציבורית (ה-bucket ציבורי)
+      const { data } = supabase.storage.from("media").getPublicUrl(res.path);
       onChange(data.publicUrl);
-    } catch {
-      setError("ההעלאה נכשלה. ודאו שהרצתם את storage-policies.sql ושאתם מחוברים.");
+    } catch (err) {
+      setError(
+        err instanceof Error ? `ההעלאה נכשלה: ${err.message}` : "ההעלאה נכשלה."
+      );
     } finally {
       setUploading(false);
       e.target.value = ""; // לאפשר העלאת אותו קובץ שוב
