@@ -19,6 +19,8 @@ export async function updateService(id: string, formData: FormData) {
       short_description: String(formData.get("short_description") ?? "") || null,
       full_description: String(formData.get("full_description") ?? "") || null,
       benefits,
+      cover_image: String(formData.get("cover_image") ?? "") || null,
+      local_video: String(formData.get("local_video") ?? "") || null,
       is_published: formData.get("is_published") === "on",
     })
     .eq("id", id);

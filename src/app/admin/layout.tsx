@@ -6,6 +6,7 @@ const ADMIN_NAV = [
   { href: "/admin", label: "לוח בקרה" },
   { href: "/admin/leads", label: "פניות" },
   { href: "/admin/services", label: "שירותים" },
+  { href: "/admin/gallery", label: "גלריה" },
   { href: "/admin/knowledge", label: "מאגר ידע (AI)" },
   { href: "/admin/settings", label: "הגדרות" },
 ];

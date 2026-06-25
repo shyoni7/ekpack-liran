@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { updateService, deleteService } from "@/app/admin/services/actions";
+import MediaUpload from "@/components/admin/MediaUpload";
 import type { Service } from "@/types";
 
 const inputClass =
@@ -11,6 +12,8 @@ export default function ServiceEditor({ service }: { service: Service }) {
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
+  const [coverImage, setCoverImage] = useState<string | null>(service.cover_image);
+  const [localVideo, setLocalVideo] = useState<string | null>(service.local_video);
 
   function onSubmit(formData: FormData) {
     startTransition(async () => {
@@ -43,6 +46,27 @@ export default function ServiceEditor({ service }: { service: Service }) {
       {open && (
         <form action={onSubmit} className="mt-4 space-y-3">
           <input type="hidden" name="slug" value={service.slug} />
+          <input type="hidden" name="cover_image" value={coverImage ?? ""} />
+          <input type="hidden" name="local_video" value={localVideo ?? ""} />
+
+          {/* מדיה */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <MediaUpload
+              label="תמונת שער"
+              folder="services"
+              kind="image"
+              value={coverImage}
+              onChange={setCoverImage}
+            />
+            <MediaUpload
+              label="סרטון מקומי (אופציונלי)"
+              folder="services"
+              kind="video"
+              value={localVideo}
+              onChange={setLocalVideo}
+            />
+          </div>
+
           <div>
             <label className="mb-1 block text-xs font-medium">שם השירות</label>
             <input name="title" defaultValue={service.title} className={inputClass} />
