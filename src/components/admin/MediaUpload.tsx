@@ -62,7 +62,14 @@ export default function MediaUpload({
       {value ? (
         <div className="relative inline-block">
           {kind === "video" ? (
-            <video src={value} className="h-32 rounded-lg border border-border" controls />
+            <video
+              src={value}
+              className="h-32 rounded-lg border border-border"
+              controls
+              muted
+              playsInline
+              preload="metadata"
+            />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="תצוגה מקדימה" className="h-32 rounded-lg border border-border object-cover" />

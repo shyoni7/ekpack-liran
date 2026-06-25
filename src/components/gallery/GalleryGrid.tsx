@@ -65,15 +65,33 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
             key={item.id}
             type="button"
             onClick={() => setLightbox(item)}
-            className="block w-full overflow-hidden rounded-xl"
+            className="relative block w-full overflow-hidden rounded-xl"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={item.thumbnail ?? item.file_url ?? ""}
-              alt={item.title ?? "תמונה מהגלריה"}
-              className="w-full transition-transform hover:scale-105"
-              loading="lazy"
-            />
+            {item.type === "video" && !item.thumbnail && item.file_url ? (
+              <>
+                <video
+                  src={item.file_url}
+                  className="w-full transition-transform hover:scale-105"
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+                {/* אייקון play על גבי תצוגת הסרטון */}
+                <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black/50 text-white">
+                    ▶
+                  </span>
+                </span>
+              </>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={item.thumbnail ?? item.file_url ?? ""}
+                alt={item.title ?? "תמונה מהגלריה"}
+                className="w-full transition-transform hover:scale-105"
+                loading="lazy"
+              />
+            )}
           </button>
         ))}
       </div>
