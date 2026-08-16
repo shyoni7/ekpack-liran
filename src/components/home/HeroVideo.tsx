@@ -32,11 +32,15 @@ export default function HeroVideo({ videoSrc, posterSrc }: HeroVideoProps) {
 
       {/* תוכן */}
       <div className="relative z-10 mx-auto max-w-3xl px-4 text-center text-white">
-        <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl">
-          {SITE.name}
+        {/* ה-H1 נושא את שם המותג יחד עם מילת המפתח המרכזית — גוגל קורא את שניהם */}
+        <h1 className="font-extrabold leading-tight">
+          <span className="block text-4xl sm:text-5xl md:text-6xl">{SITE.name}</span>
+          <span className="mt-4 block text-xl font-bold sm:text-2xl md:text-3xl">
+            פנסיון כלבים ומעון יום לכלבים
+          </span>
         </h1>
-        <p className="mt-4 flex items-center justify-center gap-2 text-lg font-medium sm:text-xl">
-          פנסיון ומעון יום לכלבים — אילוף, תיקון התנהגות ובית חם
+        <p className="mt-4 flex flex-wrap items-center justify-center gap-2 text-lg font-medium sm:text-xl">
+          אילוף כלבים, תיקון התנהגות ופעילות להקתית — בבית חם ומקצועי
           <PawPrint className="h-5 w-5" aria-hidden="true" />
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

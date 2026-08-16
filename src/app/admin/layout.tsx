@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import SignOutButton from "@/components/admin/SignOutButton";
+
+// אזור הניהול לא אמור להופיע בתוצאות החיפוש.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 const ADMIN_NAV = [
   { href: "/admin", label: "לוח בקרה" },

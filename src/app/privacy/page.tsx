@@ -4,6 +4,7 @@ import { SITE, LEGAL, whatsappLink } from "@/lib/site-config";
 export const metadata: Metadata = {
   title: "מדיניות פרטיות",
   description: `מדיניות הפרטיות של ${SITE.name} — איזה מידע נאסף, למה, ומהן זכויותיכם לפי חוק הגנת הפרטיות.`,
+  alternates: { canonical: "/privacy" },
 };
 
 // כותרת סקשן
