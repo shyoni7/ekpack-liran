@@ -85,10 +85,11 @@ const CONTENT: LandingContent = {
     },
   ],
   related: [
+    { href: "/daycare-training", label: "אילוף בתנאי מעון יום" },
     { href: "/services/long-term-boarding", label: "פנסיון ארוך טווח ותיקון התנהגותי" },
     { href: "/puppy-boarding", label: "פנסיון גורים" },
     { href: "/trainer-courses", label: "הדרכות מאלפים" },
-    { href: "/services/pack-activity", label: "פעילות להקת כלבים" },
+    { href: "/services/pack-activity", label: "פעילות להקתית" },
   ],
 };
 

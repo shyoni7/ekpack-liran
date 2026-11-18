@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Baby, Dog, GraduationCap } from "lucide-react";
+import { Baby, Dog, GraduationCap, Sun } from "lucide-react";
 
 // עמודי ההתמחות. הקישורים הפנימיים עם טקסט עוגן ממוקד עוזרים לגוגל
 // להבין על מה כל עמוד מדבר.
@@ -9,6 +9,12 @@ const SPECIALTIES = [
     icon: Dog,
     title: "אילוף כלבים ותיקון התנהגות",
     text: "ציות בסיסי, כללי התנהגות בבית ובחוץ וטיפול בבעיות כמו משיכה ברצועה, נביחות יתר וחוסר שליטה מול כלבים אחרים.",
+  },
+  {
+    href: "/daycare-training",
+    icon: Sun,
+    title: "אילוף בתנאי מעון יום",
+    text: "הכלב מתאמן כל יום בסביבה להקתית מפוקחת וחוזר אליכם הביתה בערב — עקביות יומיומית במקום שיעור שבועי.",
   },
   {
     href: "/puppy-boarding",
@@ -37,7 +43,7 @@ export default function SpecialtiesSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SPECIALTIES.map((item) => {
             const Icon = item.icon;
             return (
