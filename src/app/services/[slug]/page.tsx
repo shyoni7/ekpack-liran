@@ -3,10 +3,27 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Check } from "lucide-react";
 import { getServiceBySlug, getServices } from "@/lib/data";
-import { whatsappLink } from "@/lib/site-config";
+import { SERVICE_SEO, SITE_URL, whatsappLink } from "@/lib/site-config";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo";
+import JsonLd from "@/components/seo/JsonLd";
 import YouTubeEmbed from "@/components/ui/YouTubeEmbed";
 
 export const revalidate = 60; // ISR — רענון כל דקה
+
+// תיאור קצר מה-DB עדיף כשיש בו ממש תוכן; שורה בת כמה מילים קצרה מדי
+// בשביל תקציר בתוצאות החיפוש, ואז נופלים לתיאור ה-SEO המוכן.
+const MIN_META_DESCRIPTION = 70;
+
+function seoDescription(
+  slug: string,
+  shortDescription: string | null
+): string | undefined {
+  const fallback = SERVICE_SEO[slug]?.description;
+  if (shortDescription && shortDescription.length >= MIN_META_DESCRIPTION) {
+    return shortDescription;
+  }
+  return fallback ?? shortDescription ?? undefined;
+}
 
 export async function generateStaticParams() {
   const services = await getServices();
@@ -20,10 +37,24 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const service = await getServiceBySlug(slug);
-  if (!service) return { title: "שירות לא נמצא" };
+  if (!service) return { title: "שירות לא נמצא", robots: { index: false } };
+
+  const seo = SERVICE_SEO[slug];
+  const description = seoDescription(slug, service.short_description);
+  const path = `/services/${slug}`;
+
   return {
-    title: service.title,
-    description: service.short_description ?? undefined,
+    title: seo?.title ?? service.title,
+    description,
+    keywords: seo?.keywords,
+    alternates: { canonical: path },
+    openGraph: {
+      title: `${seo?.title ?? service.title} | E.K.PACK`,
+      description,
+      url: `${SITE_URL}${path}`,
+      type: "article",
+      ...(service.cover_image && { images: [service.cover_image] }),
+    },
   };
 }
 
@@ -36,16 +67,59 @@ export default async function ServicePage({
   const service = await getServiceBySlug(slug);
   if (!service) notFound();
 
+  const seo = SERVICE_SEO[slug];
+  const path = `/services/${slug}`;
+
   return (
     <article className="mx-auto max-w-4xl px-4 py-12">
-      <Link href="/services" className="text-sm text-brand-green hover:underline">
-        → חזרה לכל השירותים
-      </Link>
+      <JsonLd
+        data={[
+          serviceJsonLd({
+            name: seo?.heading ?? service.title,
+            description:
+              seoDescription(slug, service.short_description) ?? service.title,
+            url: `${SITE_URL}${path}`,
+            image: service.cover_image,
+          }),
+          breadcrumbJsonLd([
+            { name: "בית", path: "/" },
+            { name: "השירותים שלנו", path: "/services" },
+            { name: service.title, path },
+          ]),
+        ]}
+      />
+
+      <nav aria-label="פירורי לחם" className="text-sm text-muted">
+        <ol className="flex flex-wrap items-center gap-1">
+          <li>
+            <Link href="/" className="hover:text-brand-green hover:underline">
+              בית
+            </Link>
+          </li>
+          <li aria-hidden="true">›</li>
+          <li>
+            <Link
+              href="/services"
+              className="hover:text-brand-green hover:underline"
+            >
+              השירותים שלנו
+            </Link>
+          </li>
+          <li aria-hidden="true">›</li>
+          <li className="font-medium text-foreground">{service.title}</li>
+        </ol>
+      </nav>
 
       <h1 className="mt-4 text-4xl font-extrabold text-foreground">{service.title}</h1>
 
       {service.short_description && (
         <p className="mt-3 text-lg text-muted">{service.short_description}</p>
+      )}
+
+      {/* תקציר ממוקד מילות מפתח — מוצג רק כשאין תיאור מלא מהאדמין,
+          כדי שהעמוד לא יישאר עם שורה בודדת של תוכן. */}
+      {!service.full_description && seo?.description && (
+        <p className="mt-3 leading-relaxed text-muted">{seo.description}</p>
       )}
 
       {/* סרטון מקומי */}

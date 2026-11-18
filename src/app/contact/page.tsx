@@ -3,8 +3,10 @@ import ContactForm from "@/components/contact/ContactForm";
 import { whatsappLink } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "צור קשר",
-  description: "השאירו פרטים ונחזור אליכם, או פנו אלינו ב-WhatsApp.",
+  title: "צור קשר — פנסיון ומעון יום לכלבים",
+  description:
+    "מתעניינים בפנסיון כלבים, מעון יום או אילוף? השאירו פרטים ונחזור אליכם, או דברו איתנו ישירות בוואטסאפ.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

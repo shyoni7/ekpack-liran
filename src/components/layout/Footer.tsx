@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { NAV_LINKS, SERVICES, SITE, whatsappLink } from "@/lib/site-config";
+import {
+  BUSINESS,
+  LANDING_PAGES,
+  NAV_LINKS,
+  SERVICES,
+  SITE,
+  whatsappLink,
+} from "@/lib/site-config";
 
 export default function Footer() {
   return (
@@ -36,10 +43,17 @@ export default function Footer() {
         <div>
           <h3 className="mb-3 text-sm font-bold text-foreground">השירותים שלנו</h3>
           <ul className="space-y-2 text-sm text-muted">
-            {SERVICES.slice(0, 5).map((s) => (
+            {SERVICES.slice(0, 4).map((s) => (
               <li key={s.slug}>
                 <Link href={`/services/${s.slug}`} className="hover:text-brand-green">
                   {s.title}
+                </Link>
+              </li>
+            ))}
+            {LANDING_PAGES.map((page) => (
+              <li key={page.href}>
+                <Link href={page.href} className="hover:text-brand-green">
+                  {page.label}
                 </Link>
               </li>
             ))}
@@ -49,6 +63,26 @@ export default function Footer() {
         {/* יצירת קשר */}
         <div>
           <h3 className="mb-3 text-sm font-bold text-foreground">צרו קשר</h3>
+
+          {/* שם, כתובת וטלפון — גוגל מצליב את הפרטים האלה מול פרופיל העסק */}
+          {(BUSINESS.street || BUSINESS.city) && (
+            <address className="mb-3 not-italic text-sm leading-relaxed text-muted">
+              {BUSINESS.street && <span className="block">{BUSINESS.street}</span>}
+              {BUSINESS.city && <span className="block">{BUSINESS.city}</span>}
+            </address>
+          )}
+
+          {BUSINESS.phone && (
+            <p className="mb-3 text-sm text-muted">
+              <a
+                href={`tel:${BUSINESS.phone.replace(/[^\d+]/g, "")}`}
+                className="hover:text-brand-green"
+              >
+                {BUSINESS.phone}
+              </a>
+            </p>
+          )}
+
           <a
             href={whatsappLink()}
             target="_blank"

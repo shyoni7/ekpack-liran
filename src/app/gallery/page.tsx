@@ -5,8 +5,10 @@ import { getGalleryItems } from "@/lib/data";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "גלריה",
-  description: "תמונות וסרטונים מהחיים בפנסיון E.K.PACK.",
+  title: "גלריה — החיים בפנסיון הכלבים",
+  description:
+    "תמונות וסרטונים מהחיים בפנסיון הכלבים ובמעון היום — פעילות להקתית, אילוף ורגעים מהיומיום עם הכלבים שלנו.",
+  alternates: { canonical: "/gallery" },
 };
 
 export default async function GalleryPage() {
